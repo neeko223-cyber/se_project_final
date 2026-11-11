@@ -1,0 +1,117 @@
+.search {
+  min-height: 470px;
+  padding: calc(var(--header-height) + 32px) var(--page-padding) 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  text-align: center;
+  background:
+    linear-gradient(180deg, rgba(14, 26, 32, 0.55), rgba(14, 26, 32, 0.45)),
+    url("../../images/hero.jpg") center/cover no-repeat;
+}
+
+.search__content {
+  width: min(100%, 608px);
+}
+
+.search__title {
+  margin: 0;
+  font-family: var(--font-heading);
+  font-size: 36px;
+  font-weight: 400;
+  line-height: 40px;
+}
+
+.search__subtitle {
+  margin: 16px auto 0;
+  max-width: 480px;
+  font-size: 18px;
+  line-height: 24px;
+}
+
+.search__form {
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.search__input,
+.search__button {
+  height: 56px;
+  border-radius: 100px;
+  font-size: 16px;
+}
+
+.search__input {
+  width: 100%;
+  padding: 0 24px;
+  border: 0;
+  color: #1a1b22;
+  outline: none;
+}
+
+.search__input::placeholder {
+  color: #b6bcbf;
+}
+
+.search__button {
+  border: 0;
+  background: #2f71e5;
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+  box-shadow: 0 5px 15px rgba(14, 26, 57, 0.2);
+}
+
+.search__button:hover {
+  background: #347eff;
+}
+
+.search__button:active {
+  background: #2a65cc;
+}
+
+.search__input:focus {
+  outline: 2px solid #2f71e5;
+  outline-offset: 2px;
+}
+
+@media (min-width: 768px) {
+  .search {
+    min-height: 576px;
+    padding-top: calc(var(--header-height) + 64px);
+    padding-bottom: 80px;
+  }
+
+  .search__title {
+    font-size: 60px;
+    line-height: 64px;
+  }
+
+  .search__form {
+    position: relative;
+    display: block;
+    height: 64px;
+    margin-top: 64px;
+  }
+
+  .search__input,
+  .search__button {
+    height: 64px;
+  }
+
+  .search__input {
+    padding-right: 184px;
+  }
+
+  .search__button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 168px;
+  }
+}

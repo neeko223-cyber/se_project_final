@@ -1,0 +1,146 @@
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 56px 16px;
+  background: rgba(0, 0, 0, 0.5);
+}
+
+.modal__container {
+  position: relative;
+  width: min(430px, 100%);
+  padding: 28px 20px 24px;
+  border-radius: 16px;
+  background: #fff;
+}
+
+.modal__close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: 0;
+  background: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+.modal__title {
+  margin: 0 0 22px;
+  font-family: var(--font-text);
+  font-size: 24px;
+  font-weight: 900;
+  line-height: 28px;
+}
+
+.modal__form {
+  display: flex;
+  flex-direction: column;
+}
+
+.modal__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 22px;
+}
+
+.modal__label {
+  color: #2f71e5;
+  font-family: var(--font-form);
+  font-size: 12px;
+  line-height: 15px;
+}
+
+.modal__input {
+  width: 100%;
+  padding: 0 0 8px;
+  border: 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+  color: #1a1b22;
+  font-size: 14px;
+  line-height: 17px;
+  outline: none;
+}
+
+.modal__input:focus {
+  border-bottom-color: #1a1b22;
+}
+
+.modal__input:user-invalid {
+  border-bottom-color: #ff0000;
+}
+
+.modal__input::placeholder {
+  color: rgba(26, 27, 34, 0.2);
+}
+
+.modal__submit {
+  height: 64px;
+  margin-top: 6px;
+  border: 0;
+  border-radius: 100px;
+  background: #2f71e5;
+  box-shadow: 0 5px 15px rgba(14, 26, 57, 0.2);
+  color: #fff;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+  cursor: pointer;
+}
+
+.modal__submit:hover:not(:disabled) {
+  background: #347eff;
+}
+
+.modal__submit:disabled {
+  background: #e6e8eb;
+  box-shadow: none;
+  color: #b6bcbf;
+  cursor: default;
+}
+
+.modal__redirect {
+  margin: 16px 0 0;
+  font-size: 14px;
+  line-height: 17px;
+  text-align: center;
+}
+
+.modal__redirect_align_left {
+  text-align: left;
+  font-size: 18px;
+  line-height: 22px;
+}
+
+.modal__redirect-link {
+  padding: 0;
+  border: 0;
+  background: none;
+  color: #2f71e5;
+  font: inherit;
+  cursor: pointer;
+}
+
+.modal__redirect-link:hover {
+  opacity: 0.8;
+}
+
+@media (min-width: 560px) {
+  .modal__container {
+    padding: 34px 36px 28px;
+  }
+
+  .modal__close {
+    top: -48px;
+    right: -8px;
+  }
+}
