@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { Navigate, Route, Routes, useLocation, useNavigate } from "react-router-dom";
 import Footer from "../Footer/Footer";
 import Header from "../Header/Header";
 import LoginModal from "../LoginModal/LoginModal";
@@ -11,7 +12,8 @@ import sampleArticles from "../../utils/sampleArticles";
 import "./App.css";
 
 function App() {
-  const [page, setPage] = useState("home");
+  const location = useLocation();
+  const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
   const [registeredUser, setRegisteredUser] = useState(null);
@@ -97,42 +99,54 @@ function App() {
 
   function handleSignOut() {
     setCurrentUser(null);
-    setPage("home");
     setModal(null);
+    navigate("/");
   }
 
   const isLoggedIn = Boolean(currentUser);
+  const onSavedNews = location.pathname === "/saved-news";
 
   return (
     <div className="page">
       <Header
-        theme={page === "saved" && isLoggedIn ? "solid" : "overlay"}
-        page={page}
+        theme={onSavedNews && isLoggedIn ? "solid" : "overlay"}
         isLoggedIn={isLoggedIn}
         userName={currentUser?.name ?? ""}
-        onNavigate={setPage}
         onSignIn={() => setModal("login")}
         onSignOut={handleSignOut}
       />
-      {page === "saved" && isLoggedIn ? (
-        <SavedNews
-          userName={currentUser.name}
-          articles={savedArticles}
-          onDelete={handleDelete}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Main
+              searchState={searchState}
+              articles={articles.slice(0, visibleCount)}
+              hasMore={visibleCount < articles.length}
+              savedArticles={savedArticles}
+              isLoggedIn={isLoggedIn}
+              onSearch={handleSearch}
+              onShowMore={() => setVisibleCount((count) => count + 3)}
+              onToggleSave={handleToggleSave}
+            />
+          }
         />
-      ) : (
-        <Main
-          searchState={searchState}
-          articles={articles.slice(0, visibleCount)}
-          hasMore={visibleCount < articles.length}
-          savedArticles={savedArticles}
-          isLoggedIn={isLoggedIn}
-          onSearch={handleSearch}
-          onShowMore={() => setVisibleCount((count) => count + 3)}
-          onToggleSave={handleToggleSave}
+        <Route
+          path="/saved-news"
+          element={
+            isLoggedIn ? (
+              <SavedNews
+                userName={currentUser.name}
+                articles={savedArticles}
+                onDelete={handleDelete}
+              />
+            ) : (
+              <Navigate to="/" replace />
+            )
+          }
         />
-      )}
-      <Footer onNavigate={setPage} />
+      </Routes>
+      <Footer />
       <LoginModal
         isOpen={modal === "login"}
         onClose={closeModal}

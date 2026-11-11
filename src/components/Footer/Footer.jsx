@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import "./Footer.css";
 
 function GithubIcon() {
@@ -22,14 +23,14 @@ function FacebookIcon() {
   );
 }
 
-function Footer({ onNavigate }) {
+function Footer() {
   return (
     <footer className="footer">
       <p className="footer__copyright">© 2026 Supersite, Powered by News API</p>
       <nav className="footer__nav" aria-label="Footer">
-        <button className="footer__link" type="button" onClick={() => onNavigate("home")}>
+        <Link className="footer__link" to="/">
           Home
-        </button>
+        </Link>
         <a className="footer__link" href="https://tripleten.com" target="_blank" rel="noreferrer">
           Practicum by Yandex
         </a>

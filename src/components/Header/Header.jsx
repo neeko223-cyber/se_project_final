@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import Navigation from "../Navigation/Navigation";
 import "./Header.css";
 
-function Header({ theme, page, isLoggedIn, userName, onNavigate, onSignIn, onSignOut }) {
+function Header({ theme, isLoggedIn, userName, onSignIn, onSignOut }) {
+  const location = useLocation();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   useEffect(() => {
     setIsMenuOpen(false);
-  }, [page, isLoggedIn]);
+  }, [location.pathname, isLoggedIn]);
 
   useEffect(() => {
     if (!isMenuOpen) {
@@ -24,27 +26,20 @@ function Header({ theme, page, isLoggedIn, userName, onNavigate, onSignIn, onSig
     return () => document.removeEventListener("keydown", handleKeyDown);
   }, [isMenuOpen]);
 
-  function handleNavigate(nextPage) {
-    setIsMenuOpen(false);
-    onNavigate(nextPage);
-  }
-
   return (
     <header
       className={`header header_theme_${theme}${isMenuOpen ? " header_menu-open" : ""}`}
     >
       <div className="header__bar">
-        <button className="header__logo" type="button" onClick={() => handleNavigate("home")}>
+        <Link className="header__logo" to="/">
           NewsExplorer
-        </button>
+        </Link>
         <Navigation
           theme={theme}
-          page={page}
           isLoggedIn={isLoggedIn}
           userName={userName}
           isMenuOpen={isMenuOpen}
           onToggleMenu={() => setIsMenuOpen((open) => !open)}
-          onNavigate={handleNavigate}
           onSignIn={() => {
             setIsMenuOpen(false);
             onSignIn();

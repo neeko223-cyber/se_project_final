@@ -1,3 +1,4 @@
+import { NavLink } from "react-router-dom";
 import "./Navigation.css";
 
 function MenuIcon() {
@@ -37,20 +38,19 @@ function LogoutIcon() {
   );
 }
 
+function linkClassName({ isActive }) {
+  return isActive ? "navigation__link navigation__link_active" : "navigation__link";
+}
+
 function Navigation({
   theme,
-  page,
   isLoggedIn,
   userName,
   isMenuOpen,
   onToggleMenu,
-  onNavigate,
   onSignIn,
   onSignOut,
 }) {
-  const homeClass = page === "home" ? "navigation__link navigation__link_active" : "navigation__link";
-  const savedClass = page === "saved" ? "navigation__link navigation__link_active" : "navigation__link";
-
   return (
     <nav
       className={`navigation navigation_theme_${theme}${isMenuOpen ? " navigation_open" : ""}`}
@@ -66,13 +66,13 @@ function Navigation({
         {isMenuOpen ? <CloseIcon /> : <MenuIcon />}
       </button>
       <div className="navigation__panel">
-        <button className={homeClass} type="button" onClick={() => onNavigate("home")}>
+        <NavLink className={linkClassName} to="/" end>
           Home
-        </button>
+        </NavLink>
         {isLoggedIn && (
-          <button className={savedClass} type="button" onClick={() => onNavigate("saved")}>
+          <NavLink className={linkClassName} to="/saved-news">
             Saved articles
-          </button>
+          </NavLink>
         )}
         {isLoggedIn ? (
           <button className="navigation__logout" type="button" onClick={onSignOut}>
