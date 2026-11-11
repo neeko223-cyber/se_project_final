@@ -1,0 +1,124 @@
+.navigation {
+  display: flex;
+  align-items: center;
+}
+
+.navigation__menu-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+}
+
+.navigation__panel {
+  display: none;
+}
+
+.navigation_open .navigation__panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+  position: fixed;
+  top: var(--header-height);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 4;
+  padding-top: 16px;
+  background: #1a1b22;
+  color: #fff;
+}
+
+.navigation_theme_solid.navigation_open .navigation__panel {
+  background: #fff;
+  color: #1a1b22;
+}
+
+.navigation__link,
+.navigation__signin,
+.navigation__logout {
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  font-family: var(--font-text);
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 24px;
+}
+
+.navigation__link {
+  padding: 8px 0 12px;
+}
+
+.navigation__link_active {
+  border-bottom: 3px solid currentColor;
+}
+
+.navigation__signin,
+.navigation__logout {
+  min-width: 176px;
+  height: 40px;
+  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid currentColor;
+  border-radius: 100px;
+}
+
+.navigation__user {
+  max-width: 120px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.navigation__logout-icon {
+  flex: 0 0 auto;
+}
+
+@media (min-width: 768px) {
+  .navigation__menu-button {
+    display: none;
+  }
+
+  .navigation__panel,
+  .navigation_open .navigation__panel {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px 32px;
+    position: static;
+    top: auto;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    padding: 0;
+    background: none;
+    color: inherit;
+  }
+
+  .navigation_theme_solid .navigation__signin:hover,
+  .navigation_theme_solid .navigation__logout:hover {
+    background: #1a1b22;
+    color: #fff;
+  }
+
+  .navigation_theme_overlay .navigation__signin:hover,
+  .navigation_theme_overlay .navigation__logout:hover {
+    background: rgba(255, 255, 255, 0.16);
+  }
+
+  .navigation__link:hover {
+    opacity: 0.8;
+  }
+}
