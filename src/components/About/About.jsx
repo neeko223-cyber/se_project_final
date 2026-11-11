@@ -1,10 +1,10 @@
-import authorImage from "../../images/author.svg";
+import authorImage from "../../images/author.jpg";
 import "./About.css";
 
 function About() {
   return (
     <section className="about">
-      <img className="about__image" src={authorImage} alt="Illustrated portrait of the author" />
+      <img className="about__image" src={authorImage} alt="Portrait of the author" />
       <div className="about__content">
         <h2 className="about__title">About the author</h2>
         <p className="about__text">

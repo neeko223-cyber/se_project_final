@@ -34,6 +34,10 @@
   background: #e8eaed;
 }
 
+.cards__more:active {
+  background: #d1d2d6;
+}
+
 @media (min-width: 768px) {
   .cards__list {
     grid-template-columns: repeat(2, minmax(0, 1fr));

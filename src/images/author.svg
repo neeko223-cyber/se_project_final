@@ -1,9 +1,0 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 464 464" role="img" aria-label="Illustrated portrait of the author">
-  <rect width="464" height="464" fill="#d7e4ec"/>
-  <path d="M80 464c18-120 70-180 152-180s134 60 152 180H80z" fill="#2f71e5"/>
-  <circle cx="232" cy="196" r="86" fill="#f3c7ad"/>
-  <path d="M150 188c6-78 158-86 172 8-22-28-48-40-86-40s-66 14-86 32z" fill="#1a1b22"/>
-  <circle cx="204" cy="206" r="6" fill="#1a1b22"/>
-  <circle cx="260" cy="206" r="6" fill="#1a1b22"/>
-  <path d="M214 238c8 12 30 12 38 0" fill="none" stroke="#c4846a" stroke-width="3" stroke-linecap="round"/>
-</svg>

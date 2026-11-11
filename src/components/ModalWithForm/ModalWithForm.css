@@ -55,6 +55,7 @@
 
 .modal__label {
   color: #2f71e5;
+  font-family: var(--font-form);
   font-size: 12px;
   line-height: 15px;
 }
@@ -72,6 +73,10 @@
 
 .modal__input:focus {
   border-bottom-color: #1a1b22;
+}
+
+.modal__input:user-invalid {
+  border-bottom-color: #ff0000;
 }
 
 .modal__input::placeholder {

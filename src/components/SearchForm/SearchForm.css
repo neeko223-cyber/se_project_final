@@ -75,6 +75,11 @@
   background: #2a65cc;
 }
 
+.search__input:focus {
+  outline: 2px solid #2f71e5;
+  outline-offset: 2px;
+}
+
 @media (min-width: 768px) {
   .search {
     min-height: 576px;
