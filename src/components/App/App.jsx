@@ -7,8 +7,8 @@ import Main from "../Main/Main";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import SavedNews from "../SavedNews/SavedNews";
+import newsArticles from "../../utils/constants";
 import { nameFromEmail } from "../../utils/format";
-import sampleArticles from "../../utils/sampleArticles";
 import "./App.css";
 
 function App() {
@@ -48,8 +48,9 @@ function App() {
       }
 
       const normalized = term.toLowerCase();
-      const matches = sampleArticles.filter((article) =>
-        [article.title, article.description, article.source, article.topic]
+      const matches = newsArticles.filter((article) =>
+        [article.title, article.description, article.content, article.source?.name]
+          .filter(Boolean)
           .join(" ")
           .toLowerCase()
           .includes(normalized),
@@ -73,7 +74,7 @@ function App() {
         return current.filter((item) => item.url !== article.url);
       }
 
-      return [{ ...article, keyword: activeKeyword || article.topic }, ...current];
+      return [{ ...article, keyword: activeKeyword }, ...current];
     });
   }
 

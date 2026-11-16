@@ -40,7 +40,9 @@ function NewsCard({ article, isSaved, isSavedPage, isLoggedIn, onAction }) {
   return (
     <article className="card">
       <div className="card__image-wrap">
-        <img className="card__image" src={article.image} alt={article.title} />
+        {article.urlToImage && (
+          <img className="card__image" src={article.urlToImage} alt={article.title} />
+        )}
         {isSavedPage && article.keyword && (
           <span className="card__keyword">{formatKeyword(article.keyword)}</span>
         )}
@@ -64,7 +66,7 @@ function NewsCard({ article, isSaved, isSavedPage, isLoggedIn, onAction }) {
           </a>
         </h3>
         <p className="card__text">{article.description}</p>
-        <p className="card__source">{article.source}</p>
+        <p className="card__source">{article.source?.name}</p>
       </div>
     </article>
   );
