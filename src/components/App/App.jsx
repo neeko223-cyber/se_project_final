@@ -7,7 +7,16 @@ import Main from "../Main/Main";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import SavedNews from "../SavedNews/SavedNews";
-import { nameFromEmail } from "../../utils/format";
+import {
+  authorize,
+  checkToken,
+  deleteArticle,
+  getSavedArticles,
+  getToken,
+  register,
+  removeToken,
+  saveArticle,
+} from "../../utils/mainApi";
 import { searchNews } from "../../utils/newsApi";
 import "./App.css";
 
@@ -16,7 +25,7 @@ function App() {
   const navigate = useNavigate();
   const [modal, setModal] = useState(null);
   const [currentUser, setCurrentUser] = useState(null);
-  const [registeredUser, setRegisteredUser] = useState(null);
+  const [isAuthChecking, setIsAuthChecking] = useState(() => Boolean(getToken()));
   const [savedArticles, setSavedArticles] = useState([]);
   const [articles, setArticles] = useState([]);
   const [searchState, setSearchState] = useState("idle");
@@ -28,6 +37,43 @@ function App() {
 
   useEffect(() => {
     return () => searchAbort.current?.abort();
+  }, []);
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      setIsAuthChecking(false);
+      return undefined;
+    }
+
+    let cancelled = false;
+    checkToken(token)
+      .then((user) => {
+        if (cancelled) {
+          return null;
+        }
+        setCurrentUser(user);
+        return getSavedArticles(token);
+      })
+      .then((articles) => {
+        if (!cancelled && articles) {
+          setSavedArticles(articles);
+        }
+      })
+      .catch(() => {
+        if (!cancelled) {
+          removeToken();
+        }
+      })
+      .finally(() => {
+        if (!cancelled) {
+          setIsAuthChecking(false);
+        }
+      });
+
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
   function handleSearch(keyword) {
@@ -61,43 +107,65 @@ function App() {
   }
 
   function handleToggleSave(article) {
-    if (!currentUser) {
+    const token = getToken();
+    if (!currentUser || !token) {
       setModal("login");
       return;
     }
 
-    setSavedArticles((current) => {
-      const alreadySaved = current.some((item) => item.url === article.url);
-      if (alreadySaved) {
-        return current.filter((item) => item.url !== article.url);
-      }
+    const alreadySaved = savedArticles.find((item) => item.url === article.url);
+    const request = alreadySaved
+      ? deleteArticle(token, alreadySaved._id).then(() => {
+          setSavedArticles((current) => current.filter((item) => item._id !== alreadySaved._id));
+        })
+      : saveArticle(token, { ...article, keyword: activeKeyword }).then((stored) => {
+          setSavedArticles((current) => [stored, ...current.filter((item) => item.url !== stored.url)]);
+        });
 
-      return [{ ...article, keyword: activeKeyword }, ...current];
+    request.catch(() => {
+      removeToken();
+      setCurrentUser(null);
+      setSavedArticles([]);
+      setModal("login");
     });
   }
 
   function handleDelete(article) {
-    setSavedArticles((current) => current.filter((item) => item.url !== article.url));
+    const token = getToken();
+    if (!token) {
+      return;
+    }
+
+    deleteArticle(token, article._id)
+      .then(() => {
+        setSavedArticles((current) => current.filter((item) => item._id !== article._id));
+      })
+      .catch(() => {
+        removeToken();
+        setCurrentUser(null);
+        setSavedArticles([]);
+        navigate("/");
+      });
   }
 
-  function handleLogin({ email }) {
-    const matchedRegistration =
-      registeredUser && registeredUser.email.toLowerCase() === email.trim().toLowerCase();
-
-    setCurrentUser({
-      email: email.trim(),
-      name: matchedRegistration ? registeredUser.name : nameFromEmail(email),
+  function handleLogin({ email, password }) {
+    return authorize({ email, password }).then((user) => {
+      setCurrentUser({ email: user.email, name: user.name });
+      setModal(null);
+      return getSavedArticles(user.token).then(setSavedArticles);
     });
-    setModal(null);
   }
 
-  function handleRegister({ email, username }) {
-    setRegisteredUser({ email: email.trim(), name: username.trim() });
-    setModal("success");
+  function handleRegister({ email, password, username }) {
+    return register({ email, password, name: username }).then(() => {
+      setModal("success");
+    });
   }
 
   function handleSignOut() {
+    removeToken();
     setCurrentUser(null);
+    setSavedArticles([]);
     setModal(null);
     navigate("/");
   }
@@ -108,7 +176,7 @@ function App() {
   return (
     <div className="page">
       <Header
-        theme={onSavedNews && isLoggedIn ? "solid" : "overlay"}
+        theme={onSavedNews && (isLoggedIn || isAuthChecking) ? "solid" : "overlay"}
         isLoggedIn={isLoggedIn}
         userName={currentUser?.name ?? ""}
         onSignIn={() => setModal("login")}
@@ -133,7 +201,7 @@ function App() {
         <Route
           path="/saved-news"
           element={
-            isLoggedIn ? (
+            isAuthChecking ? null : isLoggedIn ? (
               <SavedNews
                 userName={currentUser.name}
                 articles={savedArticles}

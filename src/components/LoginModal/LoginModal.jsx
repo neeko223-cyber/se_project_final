@@ -5,17 +5,29 @@ import "./LoginModal.css";
 function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setEmail("");
       setPassword("");
+      setSubmitError("");
+      setIsSubmitting(false);
     }
   }, [isOpen]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    onLogin({ email, password });
+    setSubmitError("");
+    setIsSubmitting(true);
+    Promise.resolve(onLogin({ email, password }))
+      .catch((error) => {
+        setSubmitError(error.message || "Incorrect email or password");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   const isComplete = email.trim() !== "" && password.trim() !== "";
@@ -28,7 +40,7 @@ function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Sign in"
-      isButtonDisabled={!isComplete}
+      isButtonDisabled={!isComplete || isSubmitting}
       redirectText="or"
       redirectLinkText="Sign up"
       onRedirect={onSwitchToRegister}
@@ -43,7 +55,10 @@ function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
           autoComplete="email"
           required
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setSubmitError("");
+          }}
         />
       </label>
       <label className="modal__field">
@@ -56,9 +71,13 @@ function LoginModal({ isOpen, onClose, onLogin, onSwitchToRegister }) {
           autoComplete="current-password"
           required
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => {
+            setPassword(event.target.value);
+            setSubmitError("");
+          }}
         />
       </label>
+      {submitError && <p className="modal__error">{submitError}</p>}
     </ModalWithForm>
   );
 }

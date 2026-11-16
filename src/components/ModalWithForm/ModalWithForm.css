@@ -83,6 +83,13 @@
   color: rgba(26, 27, 34, 0.2);
 }
 
+.modal__error {
+  margin: 0 0 12px;
+  color: #ff0000;
+  font-size: 12px;
+  line-height: 15px;
+}
+
 .modal__submit {
   height: 64px;
   margin-top: 6px;

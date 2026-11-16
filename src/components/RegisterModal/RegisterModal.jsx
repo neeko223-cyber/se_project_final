@@ -6,18 +6,30 @@ function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
+  const [submitError, setSubmitError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     if (!isOpen) {
       setEmail("");
       setPassword("");
       setUsername("");
+      setSubmitError("");
+      setIsSubmitting(false);
     }
   }, [isOpen]);
 
   function handleSubmit(event) {
     event.preventDefault();
-    onRegister({ email, password, username });
+    setSubmitError("");
+    setIsSubmitting(true);
+    Promise.resolve(onRegister({ email, password, username }))
+      .catch((error) => {
+        setSubmitError(error.message || "This email is not available");
+      })
+      .finally(() => {
+        setIsSubmitting(false);
+      });
   }
 
   const isComplete = email.trim() !== "" && password.trim() !== "" && username.trim() !== "";
@@ -30,7 +42,7 @@ function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
       onClose={onClose}
       onSubmit={handleSubmit}
       buttonText="Sign up"
-      isButtonDisabled={!isComplete}
+      isButtonDisabled={!isComplete || isSubmitting}
       redirectText="or"
       redirectLinkText="Sign in"
       onRedirect={onSwitchToLogin}
@@ -45,7 +57,10 @@ function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
           autoComplete="email"
           required
           value={email}
-          onChange={(event) => setEmail(event.target.value)}
+          onChange={(event) => {
+            setEmail(event.target.value);
+            setSubmitError("");
+          }}
         />
       </label>
       <label className="modal__field">
@@ -58,7 +73,10 @@ function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
           autoComplete="new-password"
           required
           value={password}
-          onChange={(event) => setPassword(event.target.value)}
+          onChange={(event) => {
+            setPassword(event.target.value);
+            setSubmitError("");
+          }}
         />
       </label>
       <label className="modal__field">
@@ -71,9 +89,13 @@ function RegisterModal({ isOpen, onClose, onRegister, onSwitchToLogin }) {
           autoComplete="username"
           required
           value={username}
-          onChange={(event) => setUsername(event.target.value)}
+          onChange={(event) => {
+            setUsername(event.target.value);
+            setSubmitError("");
+          }}
         />
       </label>
+      {submitError && <p className="modal__error">{submitError}</p>}
     </ModalWithForm>
   );
 }
