@@ -37,6 +37,15 @@ function NewsCard({ article, isSaved, isSavedPage, isLoggedIn, onAction }) {
     label = "Remove from saved";
   }
 
+  const isInactive = !isSavedPage && !isLoggedIn;
+  const actionClassName = [
+    "card__action",
+    isSaved ? "card__action_saved" : "",
+    isInactive ? "card__action_inactive" : "",
+  ]
+    .filter(Boolean)
+    .join(" ");
+
   return (
     <article className="card">
       <div className="card__image-wrap">
@@ -47,7 +56,7 @@ function NewsCard({ article, isSaved, isSavedPage, isLoggedIn, onAction }) {
           <span className="card__keyword">{formatKeyword(article.keyword)}</span>
         )}
         <button
-          className={`card__action${isSaved ? " card__action_saved" : ""}`}
+          className={actionClassName}
           type="button"
           aria-label={label}
           onClick={() => onAction(article)}
