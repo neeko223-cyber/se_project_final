@@ -7,8 +7,8 @@ import Main from "../Main/Main";
 import ModalWithForm from "../ModalWithForm/ModalWithForm";
 import RegisterModal from "../RegisterModal/RegisterModal";
 import SavedNews from "../SavedNews/SavedNews";
-import newsArticles from "../../utils/constants";
 import { nameFromEmail } from "../../utils/format";
+import { searchNews } from "../../utils/newsApi";
 import "./App.css";
 
 function App() {
@@ -22,44 +22,41 @@ function App() {
   const [searchState, setSearchState] = useState("idle");
   const [activeKeyword, setActiveKeyword] = useState("");
   const [visibleCount, setVisibleCount] = useState(3);
-  const searchTimeout = useRef(null);
+  const searchAbort = useRef(null);
 
   const closeModal = useCallback(() => setModal(null), []);
 
   useEffect(() => {
-    return () => clearTimeout(searchTimeout.current);
+    return () => searchAbort.current?.abort();
   }, []);
 
   function handleSearch(keyword) {
     const term = keyword.trim();
-    if (!term) {
-      return;
-    }
+    searchAbort.current?.abort();
+    const controller = new AbortController();
+    searchAbort.current = controller;
 
     setActiveKeyword(term);
+    setVisibleCount(3);
     setSearchState("loading");
-    clearTimeout(searchTimeout.current);
 
-    searchTimeout.current = setTimeout(() => {
-      if (term.toLowerCase() === "error") {
+    searchNews(term, controller.signal)
+      .then((nextArticles) => {
+        if (searchAbort.current !== controller) {
+          return;
+        }
+
+        setArticles(nextArticles);
+        setSearchState(nextArticles.length > 0 ? "results" : "nothing");
+      })
+      .catch((error) => {
+        if (error.name === "AbortError" || searchAbort.current !== controller) {
+          return;
+        }
+
         setArticles([]);
         setSearchState("error");
-        return;
-      }
-
-      const normalized = term.toLowerCase();
-      const matches = newsArticles.filter((article) =>
-        [article.title, article.description, article.content, article.source?.name]
-          .filter(Boolean)
-          .join(" ")
-          .toLowerCase()
-          .includes(normalized),
-      );
-
-      setArticles(matches);
-      setVisibleCount(3);
-      setSearchState(matches.length > 0 ? "results" : "nothing");
-    }, 800);
+      });
   }
 
   function handleToggleSave(article) {

@@ -3,9 +3,16 @@ import "./SearchForm.css";
 
 function SearchForm({ onSearch }) {
   const [topic, setTopic] = useState("");
+  const [error, setError] = useState("");
 
   function handleSubmit(event) {
     event.preventDefault();
+    if (topic.trim() === "") {
+      setError("Please enter a keyword");
+      return;
+    }
+
+    setError("");
     onSearch(topic);
   }
 
@@ -16,7 +23,7 @@ function SearchForm({ onSearch }) {
         <p className="search__subtitle">
           Find the latest news on any topic and save them in your personal account.
         </p>
-        <form className="search__form" role="search" onSubmit={handleSubmit}>
+        <form className="search__form" role="search" noValidate onSubmit={handleSubmit}>
           <label className="visually-hidden" htmlFor="search-topic">
             Search topic
           </label>
@@ -27,9 +34,20 @@ function SearchForm({ onSearch }) {
             type="text"
             placeholder="Enter topic"
             value={topic}
-            required
-            onChange={(event) => setTopic(event.target.value)}
+            aria-invalid={error !== ""}
+            aria-describedby={error ? "search-keyword-error" : undefined}
+            onChange={(event) => {
+              setTopic(event.target.value);
+              if (error) {
+                setError("");
+              }
+            }}
           />
+          {error && (
+            <p className="search__error" id="search-keyword-error" role="alert">
+              {error}
+            </p>
+          )}
           <button className="search__button" type="submit">
             Search
           </button>

@@ -13,8 +13,8 @@ function NewsCardList({
     <div className="cards">
       <h2 className="cards__title">Search results</h2>
       <ul className="cards__list">
-        {articles.map((article) => (
-          <li className="cards__item" key={article.url}>
+        {articles.map((article, index) => (
+          <li className="cards__item" key={`${article.url ?? "article"}-${index}`}>
             <NewsCard
               article={article}
               isSaved={savedArticles.some((item) => item.url === article.url)}
