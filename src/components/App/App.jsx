@@ -37,6 +37,7 @@ function App() {
     searchAbort.current = controller;
 
     setActiveKeyword(term);
+    setArticles([]);
     setVisibleCount(3);
     setSearchState("loading");
 

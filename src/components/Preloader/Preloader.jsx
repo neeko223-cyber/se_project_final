@@ -2,8 +2,7 @@ import "./Preloader.css";
 
 const messages = {
   nothing: "Sorry, but nothing matched your search terms.",
-  error:
-    "Sorry, something went wrong during the request. There may be a connection issue or the server may be down. Please try again later.",
+  error: "Sorry, something went wrong during the request. Please try again later.",
 };
 
 function StatusIcon() {
@@ -35,7 +34,7 @@ function Preloader({ status = "loading" }) {
     );
   }
 
-  const title = status === "nothing" ? "Nothing found" : "";
+  const title = status === "nothing" ? "Nothing Found" : "";
 
   return (
     <div className={`preloader preloader_status_${status}`} role="status">
