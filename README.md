@@ -45,16 +45,28 @@ Open http://127.0.0.1:5173/. Search needs the key in `.env`. Sign-up and saved a
 
 ## How to deploy
 
-A production build writes a static site to `dist`. The build uses the `/se_project_final/` base path so assets load on GitHub Pages.
+A production build writes a static site to `dist`. The build uses the `/se_project_final/` base path so assets and routes load on GitHub Pages. `VITE_NEWS_API_KEY` is read while the site is built, so put the key in `.env` before building if search should work on the published site.
 
 ```bash
 npm run build
 npm run preview
 ```
 
-The preview is at http://127.0.0.1:4173/se_project_final/. `VITE_NEWS_API_KEY` is read while the site is built, so put the key in `.env` before `npm run build` if search should work in that build.
+The preview is at http://127.0.0.1:4173/se_project_final/.
 
-Pushes to `main` run `.github/workflows/deploy.yml`. That workflow builds the site and publishes `dist` to GitHub Pages. Add a repository secret named `VITE_NEWS_API_KEY` (Settings, Secrets and variables, Actions) before relying on search in the published site. The secret is copied into the build. It is not stored in git.
+Publish that `dist` folder to the `gh-pages` branch:
+
+```bash
+npx --yes gh-pages -d dist
+```
+
+GitHub Pages serves the `gh-pages` branch. Turn that on once in the repository:
+
+1. Open Settings, then Pages.
+2. Under Build and deployment, choose Deploy from a branch.
+3. Select the `gh-pages` branch and the `/ (root)` folder, then save.
+
+The current production build is already on `gh-pages`.
 
 ## Deployed app
 
