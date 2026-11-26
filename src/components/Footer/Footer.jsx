@@ -28,18 +28,22 @@ function Footer() {
     <footer className="footer">
       <p className="footer__copyright">© 2026 Supersite, Powered by News API</p>
       <nav className="footer__nav" aria-label="Footer">
-        <Link className="footer__link" to="/">
-          Home
-        </Link>
-        <a className="footer__link" href="https://tripleten.com" target="_blank" rel="noreferrer">
-          Practicum by Yandex
-        </a>
-        <a className="footer__social" href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
-          <GithubIcon />
-        </a>
-        <a className="footer__social" href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
-          <FacebookIcon />
-        </a>
+        <div className="footer__links">
+          <Link className="footer__link" to="/">
+            Home
+          </Link>
+          <a className="footer__link" href="https://tripleten.com" target="_blank" rel="noreferrer">
+            Practicum by Yandex
+          </a>
+        </div>
+        <div className="footer__socials">
+          <a className="footer__social" href="https://github.com" target="_blank" rel="noreferrer" aria-label="GitHub">
+            <GithubIcon />
+          </a>
+          <a className="footer__social" href="https://facebook.com" target="_blank" rel="noreferrer" aria-label="Facebook">
+            <FacebookIcon />
+          </a>
+        </div>
       </nav>
     </footer>
   );

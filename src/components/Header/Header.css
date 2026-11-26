@@ -34,11 +34,13 @@
 .header__bar {
   height: var(--header-height);
   max-width: 1440px;
+  min-width: 0;
   margin: 0 auto;
   padding: 0 var(--page-padding);
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 16px;
   box-shadow: inset 0 -1px 0 rgba(255, 255, 255, 0.2);
 }
 

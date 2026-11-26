@@ -1,7 +1,6 @@
-const newsApiBaseUrl =
-  process.env.NODE_ENV === "production"
-    ? "https://news-api-proxy.up.railway.app/news/v2/everything"
-    : "https://newsapi.org/v2/everything";
+const newsApiBaseUrl = import.meta.env.PROD
+  ? "https://news-api-proxy.up.railway.app/news/v2/everything"
+  : "https://newsapi.org/v2/everything";
 
 function toApiDate(date) {
   const year = date.getFullYear();

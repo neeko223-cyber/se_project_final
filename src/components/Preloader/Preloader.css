@@ -44,8 +44,9 @@
 }
 
 .preloader__text {
-  max-width: 380px;
+  max-width: min(380px, 100%);
   margin: 16px 0 0;
+  overflow-wrap: anywhere;
   font-size: 18px;
   line-height: 24px;
 }

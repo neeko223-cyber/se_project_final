@@ -1,6 +1,5 @@
-import authorImage from "../../images/author.jpg";
-import "./About.css";
 import nickPhoto from "../../images/Nick.jpg";
+import "./About.css";
 
 function About() {
   return (

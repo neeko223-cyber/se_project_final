@@ -13,10 +13,12 @@
 
 .search__content {
   width: min(100%, 608px);
+  min-width: 0;
 }
 
 .search__title {
   margin: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-size: 36px;
   font-weight: 400;
