@@ -1,5 +1,6 @@
 .saved {
   flex: 1;
+  min-width: 0;
   background: #fff;
 }
 
@@ -10,12 +11,16 @@
 
 .saved__list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   max-width: 1232px;
   margin: 0 auto;
   padding: 0;
   list-style: none;
+}
+
+.saved__item {
+  min-width: 0;
 }
 
 @media (min-width: 768px) {

@@ -1,6 +1,7 @@
 .navigation {
   display: flex;
   align-items: center;
+  min-width: 0;
 }
 
 .navigation__menu-button {

@@ -8,11 +8,15 @@
 
 .cards__list {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 16px;
   margin: 0;
   padding: 0;
   list-style: none;
+}
+
+.cards__item {
+  min-width: 0;
 }
 
 .cards__more {

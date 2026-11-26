@@ -13,6 +13,7 @@
 .saved-header__title {
   max-width: 560px;
   margin: 0;
+  overflow-wrap: anywhere;
   font-family: var(--font-heading);
   font-size: 30px;
   font-weight: 400;
@@ -22,6 +23,7 @@
 .saved-header__keywords {
   max-width: 560px;
   margin: 16px 0 0;
+  overflow-wrap: anywhere;
   font-size: 18px;
   line-height: 24px;
 }
