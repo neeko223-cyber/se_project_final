@@ -12,8 +12,10 @@
 .about__image {
   width: min(100%, 272px);
   aspect-ratio: 1;
+  border-radius: 50%;
   object-fit: cover;
   object-position: center 18%;
+  opacity: 1;
   background: #c5d5df;
 }
 
@@ -50,6 +52,7 @@
 
   .about__image {
     width: 232px;
+    height: 232px;
     flex: 0 0 232px;
   }
 }
@@ -63,7 +66,8 @@
 
   .about__image {
     width: 464px;
-    flex-basis: 464px;
+    height: 464px;
+    flex: 0 0 464px;
   }
 
   .about__title {
