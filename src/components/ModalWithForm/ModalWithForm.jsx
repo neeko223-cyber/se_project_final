@@ -29,6 +29,7 @@ function ModalWithForm({
     }
 
     const previousOverflow = document.body.style.overflow;
+    document.body.classList.add("modal-open");
 
     function handleKeyDown(event) {
       if (event.key === "Escape") {
@@ -40,6 +41,7 @@ function ModalWithForm({
     document.addEventListener("keydown", handleKeyDown);
 
     return () => {
+      document.body.classList.remove("modal-open");
       document.body.style.overflow = previousOverflow;
       document.removeEventListener("keydown", handleKeyDown);
     };
